@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title%} User-Details {% endblock %}
+
+{% block content %} 
+<div class="row m-2">
+    <div class="col-sm text-right">
+        <img src="{{ user.image_url }}" width="200">
+    </div>
+    <div class="col-sm mt-2">
+        <h1>{{ user.first_name }} {{ user.last_name }}</h1>
+        
+        <form action='/edit-user/{{ user.id }}' class="d-inline">
+            <button type="submit" class="btn btn-primary btn-sm">Edit</button>
+        </form>
+
+        <form action='/delete-user/{{ user.id }}' class="d-inline" method="POST">
+            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+        </form>
+
+    </div>
+</div>    
+{% endblock %}
