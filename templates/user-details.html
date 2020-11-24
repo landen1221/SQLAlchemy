@@ -16,7 +16,22 @@
         <form action='/delete-user/{{ user.id }}' class="d-inline" method="POST">
             <button type="submit" class="btn btn-danger btn-sm">Delete</button>
         </form>
-
+        <br><br>
+        <h3 class="m-2">{{user.first_name}}'s Posts:</h3>
+        
+        <ul>
+            {% if not posts %}
+                <li><b>No Posts for this user</b></li>
+            {% else %}
+                {% for post in posts %}
+                    <li><a href="/post-details/{{post.id}}"> {{post.title}} </a></li>
+                {% endfor %}
+            {% endif %}
+            
+        </ul>
+        <form action='/add-post/{{user.id}}' class="d-inline">
+            <button type="submit" class="btn btn-success btn-sm">Add Post</button>
+        </form>
     </div>
 </div>    
 {% endblock %}
