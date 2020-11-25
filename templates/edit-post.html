@@ -3,7 +3,7 @@
 
 {% block content %} 
 <h1>Edit Post</h1>
-<form action="/edit-post/{{post.id}}" method="POST">
+<form action="/post-details/{{post.id}}" class="d-inline" method="POST">
   <div class="form-group">
     <label for="post-title">Title:</label>
     <input type="text" class="form-control" name='post-title' id="post-title" value='{{post.title}}' required>
@@ -14,6 +14,23 @@
     <textarea class="form-control" id="content" name='post-content' rows="3">{{ post.content }}</textarea>
   </div>
   
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <u>Add Tags?</u>
+    <div class="form-check">
+        {% for tag in tags %}
+            <input class="form-check-input" type="checkbox" value="" name='' id="">
+            <label class="form-check-label" for="defaultCheck1">
+                {{ tag.tag_name }}
+            </label><br>
+        {% endfor %}
+    </div>
+        
+
+  <div class="text-right">
+  <form action="/post-details/{{ id }}" class="d-inline">
+    <button type="submit" class="btn btn-outline-primary btn-sm ">Cancel</button>
+  </form>
+
+  <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+  </div>
 </form>
 {% endblock %}

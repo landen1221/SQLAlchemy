@@ -6,12 +6,19 @@
 <h1>{{post.title}}</h1>
 <hr>
 <p>{{ post.content }}</p>
-<p class="font-italic font-weight-light">Created By: {{ post.userID.first_name }} {{ post.userID.last_name }}</p>
+<p class="font-italic font-weight-light">Created By: {{ post.userID.first_name }} {{ post.userID.last_name }} on {{ date }}</p>
+<p><b>Tags:</b> 
+    {% for tag in tags %} 
+        <span class="badge badge-primary">{{ tag.tag_name }}</span> 
+    {% endfor %}
+
+
+</p>
 <div class="container text-right">
     <form action="/user-details/{{ post.user_id }}" class="d-inline">
         <button type="submit" class="btn btn-outline-primary btn-sm ">Cancel</button>
     </form>
-
+    
     <form action='/edit-post/{{ post.id }}' class="d-inline">
         <button type="submit" class="btn btn-primary btn-sm ml-2">Edit</button>
     </form>
@@ -19,6 +26,8 @@
     <form action='/delete-post/{{ post.id }}' class="d-inline" method="POST">
         <button type="submit" class="btn btn-danger btn-sm ml-2">Delete</button>
     </form>
+
+    
 </div>
 
 {% endblock %}

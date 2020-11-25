@@ -2,7 +2,7 @@
 
 from flask import Flask, request, redirect, render_template, session
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, Users, Post
+from models import db, connect_db, Users, Post, PostTag, Tag
 import datetime
 
 app = Flask(__name__)
@@ -97,8 +97,9 @@ def new_post(id):
 @app.route('/post-details/<post_id>')
 def display_post(post_id):
     post = Post.query.get(post_id)
-
-    return render_template('post-details.html', post=post)
+    date = str(post.created_at)[:10]
+    tags = post.post_tag
+    return render_template('post-details.html', post=post, date=date, tags=tags)
 
 @app.route('/delete-post/<post_id>', methods=['POST'])
 def delete_post(post_id):
@@ -113,9 +114,10 @@ def delete_post(post_id):
 @app.route('/edit-post/<id>')
 def edit_post(id):
     post = Post.query.get(id)
-    return render_template('edit-post.html', post=post)
+    tags = Tag.query.all()
+    return render_template('edit-post.html', post=post, id=id, tags=tags)
 
-@app.route('/edit-post/<id>', methods=['POST'])
+@app.route('/post-details/<id>', methods=['POST'])
 def edited_post(id):
     post = Post.query.get(id)
     user_id = post.user_id
@@ -126,5 +128,34 @@ def edited_post(id):
     db.session.add(post)
     db.session.commit()
 
-    return redirect(f'/user-details/{user_id}')
+    return redirect(f'/post-details/{user_id}')
 
+
+@app.route('/create-tag')
+def new_tag():
+    return render_template('/create-tag.html')
+
+@app.route('/tags')
+def get_tag_list():
+    tags = Tag.query.all()
+    return render_template('/tags.html', tags=tags)
+
+@app.route('/created-tag', methods=['POST'])
+def create_new_tag():
+    new_tag = request.form['new-tag']
+    
+    all_tags = Tag.query.all()
+    for i in all_tags:
+        if new_tag == i.tag_name:
+            return redirect('/tags')
+    
+    create_tag = Tag(tag_name=new_tag)
+    db.session.add(create_tag)
+    db.session.commit()
+    return redirect('/tags')
+
+@app.route('/post-tags/<tag_name>')
+def get_all_posts_w_tag(tag_name):
+    curr_tag = Tag.query.filter(Tag.tag_name == tag_name)
+    post_lst = curr_tag[0].posts
+    return render_template('post-tags.html', curr_tag=curr_tag, tag_name=tag_name, post_lst=post_lst)
