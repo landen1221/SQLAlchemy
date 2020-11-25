@@ -3,7 +3,7 @@
 
 {% block content %} 
 <h1>Edit Post</h1>
-<form action="/post-details/{{post.id}}" class="d-inline" method="POST">
+<form action="/post-details/{{id}}" class="d-inline" method="POST">
   <div class="form-group">
     <label for="post-title">Title:</label>
     <input type="text" class="form-control" name='post-title' id="post-title" value='{{post.title}}' required>
@@ -17,10 +17,18 @@
   <u>Add Tags?</u>
     <div class="form-check">
         {% for tag in tags %}
-            <input class="form-check-input" type="checkbox" value="" name='' id="">
-            <label class="form-check-label" for="defaultCheck1">
+        {% if tag.tag_name in tag_list %}
+            <input class="form-check-input" type="checkbox" value="{{ tag.tag_name }}" name='{{ tag.tag_name }}' id="" checked>
+            <label class="form-check-label" for="{{ tag.tag_name }}">
                 {{ tag.tag_name }}
             </label><br>
+        {% else %}
+            <input class="form-check-input" type="checkbox" value="{{ tag.tag_name }}" name='{{ tag.tag_name }}' id="">
+            <label class="form-check-label" for="{{ tag.tag_name }}">
+                {{ tag.tag_name }}
+            </label><br>
+        {% endif %}
+            
         {% endfor %}
     </div>
         

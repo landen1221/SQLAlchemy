@@ -14,7 +14,27 @@
     <label for="post-content">Content:</label>
     <textarea class="form-control" id="content" name='post-content' rows="3"></textarea>
   </div>
-  
-  <button type="submit" class="btn btn-primary">Submit</button>
+
+  <u>Add Tags?</u>
+    <div class="form-check">
+        {% for tag in tags %}
+        {% if tag.tag_name in tag_list %}
+            <input class="form-check-input" type="checkbox" value="{{ tag.tag_name }}" name='{{ tag.tag_name }}' id="" checked>
+            <label class="form-check-label" for="{{ tag.tag_name }}">
+                {{ tag.tag_name }}
+            </label><br>
+        {% else %}
+            <input class="form-check-input" type="checkbox" value="{{ tag.tag_name }}" name='{{ tag.tag_name }}' id="">
+            <label class="form-check-label" for="{{ tag.tag_name }}">
+                {{ tag.tag_name }}
+            </label><br>
+        {% endif %}
+            
+        {% endfor %}
+    </div>
+    
+    <div class="text-right">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
 </form>
 {% endblock %}
