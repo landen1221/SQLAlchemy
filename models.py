@@ -33,9 +33,9 @@ class Post(db.Model):
     created_at = db.Column(db.DateTime)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    userID = db.relationship('Users', backref='posts')
+    userID = db.relationship('Users', backref='posts', cascade="all,delete")
 
-    post_tag = db.relationship('Tag', secondary="post_tags", backref='posts')
+    post_tag = db.relationship('Tag', secondary="post_tags", backref='posts', cascade="all,delete")
 
     def __repr__(self):
         return f"<{self.title} / {self.content[:15]} / {self.created_at} / {self.user_id}>"

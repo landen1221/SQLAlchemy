@@ -17,18 +17,10 @@
   <u>Add Tags?</u>
     <div class="form-check">
         {% for tag in tags %}
-        {% if tag.tag_name in tag_list %}
-            <input class="form-check-input" type="checkbox" value="{{ tag.tag_name }}" name='{{ tag.tag_name }}' id="" checked>
-            <label class="form-check-label" for="{{ tag.tag_name }}">
+            <input class="form-check-input" type="checkbox" value="{{ tag.id }}" name='tags' id="" {% if tag.tag_name in tag_list %} checked {% endif %}>
+            <label class="form-check-label" for="{{ tag.id }}">
                 {{ tag.tag_name }}
-            </label><br>
-        {% else %}
-            <input class="form-check-input" type="checkbox" value="{{ tag.tag_name }}" name='{{ tag.tag_name }}' id="">
-            <label class="form-check-label" for="{{ tag.tag_name }}">
-                {{ tag.tag_name }}
-            </label><br>
-        {% endif %}
-            
+            </label><br>            
         {% endfor %}
     </div>
         

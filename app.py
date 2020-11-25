@@ -82,7 +82,7 @@ def add_post_to_user(id):
 #Path when editing a post
 @app.route('/post-details/<id>', methods=['POST'])
 def edited_post(id):
-    post = Post.query.get(id)
+    post = Post.query.get_or_404(id)
     post.title = request.form['post-title']
     post.content = request.form['post-content']
     post.created_at = datetime.datetime.now()
@@ -90,22 +90,30 @@ def edited_post(id):
     #Erase all current tags associated with this post
     PostTag.query.filter_by(post_id=id).delete()
 
+    tag_ids = [int(num) for num in request.form.getlist("tags")]
+    for tag in tag_ids:
+        link_tag = PostTag(post_id=id, tag_id=tag)
+        add_and_commit(link_tag)
+
     add_and_commit(post)
 
-    all_tags = db.session.query(Tag.tag_name).all()
-    all_tags_list = [v for v, in all_tags]
 
 
-    for tag in all_tags_list:
-        try:
-            new_tag = request.form[tag]
-            tag_used = Tag.query.filter(Tag.tag_name == new_tag).all()            
 
-            link_tag = PostTag(post_id=id, tag_id=tag_used[0].id)
+    # all_tags = db.session.query(Tag.tag_name).all()
+    # all_tags_list = [v for v, in all_tags]
 
-            add_and_commit(link_tag)
-        except:
-            pass   
+
+    # for tag in all_tags_list:
+    #     try:
+    #         new_tag = request.form[tag]
+    #         tag_used = Tag.query.filter(Tag.tag_name == new_tag).all()            
+
+    #         link_tag = PostTag(post_id=id, tag_id=tag_used[0].id)
+
+    #         add_and_commit(link_tag)
+    #     except:
+    #         pass   
 
     
     return redirect(f'/post-details/{id}')
